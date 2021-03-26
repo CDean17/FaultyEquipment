@@ -13,24 +13,51 @@ public class twodPlayerMovement : MonoBehaviour
     public float moveDirection = 0;
     public bool canJump = true;
     private bool jumpNow = false;
+    public Collider2D groundDetection;
+
+    private Animator anim;
+    private SpriteRenderer spr;
 
     
     // Start is called before the first frame update
     void Start()
     {
         rb2d = transform.GetComponent<Rigidbody2D>();
+        anim = transform.GetComponent<Animator>();
+        spr = transform.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Check if can jump or not
-        canJump = Physics2D.Raycast(transform.position, -transform.up, 1.2f);
 
         moveDirection = Input.GetAxis("Horizontal");
 
-        if (Input.GetAxis("Vertical") > 0 && canJump)
+        if (Input.GetAxis("Vertical") > 0 && canJump && !jumpNow)
+        {
             jumpNow = true;
+            anim.SetBool("Jump", true);
+            canJump = false;
+            anim.SetBool("Grounded", false);
+        }
+            
+        if(rb2d.velocity.x != 0)
+        {
+            anim.SetBool("Walking", true);
+        }
+        else
+        {
+            anim.SetBool("Walking", false);
+        }
+
+        if(Input.GetAxis("Horizontal") < 0)
+        {
+            spr.flipX = true;
+        }
+        else if(Input.GetAxis("Horizontal") > 0)
+        {
+            spr.flipX = false;
+        }
 
     }
 
@@ -45,12 +72,24 @@ public class twodPlayerMovement : MonoBehaviour
             //Debug.Log("Jumping!");
             rb2d.velocity = rb2d.velocity + new Vector2(0, jumpPower);
             jumpNow = false;
+            anim.SetBool("Jump", false);
         }
 
     }
 
-    private void jump(float power)
-    {
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        //
+        //if (collision.)
+       // {
+            //Debug.Log("collided!");
+            canJump = true;
+          anim.SetBool("Grounded", true);
+
+        // }
     }
+
+   
+ 
 }
