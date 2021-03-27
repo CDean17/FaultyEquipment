@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class twodPlayerMovement : MonoBehaviour
 {
@@ -30,17 +31,8 @@ public class twodPlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        moveDirection = Input.GetAxis("Horizontal");
-
-        if (Input.GetAxis("Vertical") > 0 && canJump && !jumpNow)
-        {
-            jumpNow = true;
-            anim.SetBool("Jump", true);
-            canJump = false;
-            anim.SetBool("Grounded", false);
-        }
-            
+        
+   
         if(rb2d.velocity.x != 0)
         {
             anim.SetBool("Walking", true);
@@ -50,22 +42,27 @@ public class twodPlayerMovement : MonoBehaviour
             anim.SetBool("Walking", false);
         }
 
-        if(Input.GetAxis("Horizontal") < 0)
-        {
-            spr.flipX = true;
-        }
-        else if(Input.GetAxis("Horizontal") > 0)
-        {
-            spr.flipX = false;
-        }
 
     }
 
     private void FixedUpdate()
     {
         float yFix = rb2d.velocity.y;
-
-        rb2d.velocity = new Vector2(moveDirection * groundMoveSpeed, yFix);
+        if (canJump)
+        {
+            rb2d.velocity = new Vector2(moveDirection * groundMoveSpeed, yFix);
+        }
+        else
+        {
+            if(rb2d.velocity.x < maxStrafeSpeed && moveDirection > 0)
+            {
+                rb2d.velocity = new Vector2(rb2d.velocity.x + (airStrafeSpeed), yFix);
+            }else if(rb2d.velocity.x > -maxStrafeSpeed && moveDirection < 0)
+            {
+                rb2d.velocity = new Vector2(rb2d.velocity.x - (airStrafeSpeed), yFix);
+            }
+        }
+        
 
         if (jumpNow)
         {
@@ -82,12 +79,41 @@ public class twodPlayerMovement : MonoBehaviour
     {
         //
         //if (collision.)
-       // {
-            //Debug.Log("collided!");
+        // {
+        //Debug.Log("collided!");
+        if (!jumpNow)
+        {
             canJump = true;
+        }
+            
           anim.SetBool("Grounded", true);
 
         // }
+    }
+
+    public void OnMove(InputValue input)
+    {
+        moveDirection = input.Get<Vector2>().x;
+        if(moveDirection < 0)
+        {
+            spr.flipX = true;
+        }
+        else if(moveDirection > 0)
+        {
+            spr.flipX = false;
+        }
+        Debug.Log("InputActionTriggered!");
+    }
+
+    public void OnJump()
+    {
+        if(canJump && !jumpNow)
+        {
+            jumpNow = true;
+            anim.SetBool("Jump", true);
+            canJump = false;
+            anim.SetBool("Grounded", false);
+        }
     }
 
    
