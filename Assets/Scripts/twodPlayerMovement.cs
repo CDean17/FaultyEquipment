@@ -6,14 +6,20 @@ using UnityEngine.InputSystem;
 public class twodPlayerMovement : MonoBehaviour
 {
     private Rigidbody2D rb2d;
+    public GameObject jumpParticleSpawn;
+    public GameObject jumpParticle;
 
     public float jumpPower = 30f;
     public float groundMoveSpeed = 10f;
+    public float aimMoveSpeed = 4f;
     public float airStrafeSpeed = 2f;
     public float maxStrafeSpeed = 10f;  //compare the x value of the current movespeed to the direction hit to determine whether to apply. That way the player still has control when moving fast
     public float moveDirection = 0;
+    public float curSpeed = 10f;
     public bool canJump = true;
     private bool jumpNow = false;
+    private bool aiming = false;
+
     public Collider2D groundDetection;
 
     private Animator anim;
@@ -47,10 +53,19 @@ public class twodPlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (aiming)
+        {
+            curSpeed = aimMoveSpeed;
+        }
+        else
+        {
+            curSpeed = groundMoveSpeed;
+        }
+
         float yFix = rb2d.velocity.y;
         if (canJump)
         {
-            rb2d.velocity = new Vector2(moveDirection * groundMoveSpeed, yFix);
+            rb2d.velocity = new Vector2(moveDirection * curSpeed, yFix);
         }
         else
         {
@@ -113,8 +128,28 @@ public class twodPlayerMovement : MonoBehaviour
             anim.SetBool("Jump", true);
             canJump = false;
             anim.SetBool("Grounded", false);
+
+            Instantiate(jumpParticle, jumpParticleSpawn.transform.position, jumpParticleSpawn.transform.rotation);
         }
     }
+
+    public void OnAim(InputValue input)
+    {
+        if (input.Get<float>() == 0)
+        {
+            aiming = false;
+        }
+        else
+        {
+            aiming = true;
+        }
+    }
+
+    public void OnAimCanceled()
+    {
+        aiming = false;
+    }
+
 
    
  

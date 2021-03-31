@@ -39,9 +39,9 @@
                 },
                 {
                     "name": "Aim",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "d02b3797-7f1d-4fac-a8d6-a3823b6d191e",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Analog",
                     "processors": "",
                     "interactions": ""
                 },

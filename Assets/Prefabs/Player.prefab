@@ -17,9 +17,9 @@ GameObject:
   - component: {fileID: 1858628001942437134}
   - component: {fileID: 1017045442}
   - component: {fileID: 1132215373}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34,7 +34,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.44, y: -1.61, z: 0}
   m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
-  m_Children: []
+  m_Children:
+  - {fileID: 5221340630987983874}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -119,9 +120,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpPower: 15
   groundMoveSpeed: 10
+  aimMoveSpeed: 4
   airStrafeSpeed: 1
   maxStrafeSpeed: 10
   moveDirection: 0
+  curSpeed: 10
   canJump: 0
   groundDetection: {fileID: 1858628001942437135}
 --- !u!50 &1858628001942437128
@@ -296,3 +299,34 @@ MonoBehaviour:
   selectedSlot: 0
   inventorySize: 3
   defaultObject: {fileID: 2510480716865995066, guid: 5cd79be3fafcef14d9529a59cead0f72, type: 3}
+  collidingWep: {fileID: 0}
+--- !u!1 &5168890180652410230
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5221340630987983874}
+  m_Layer: 7
+  m_Name: JumpParticleSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5221340630987983874
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5168890180652410230}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1858628001942437132}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
