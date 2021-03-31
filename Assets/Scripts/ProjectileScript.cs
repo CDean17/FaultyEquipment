@@ -40,7 +40,10 @@ public class ProjectileScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
+        if(collision.gameObject.TryGetComponent(out BreakableStructureScript b))
+        {
+            b.TakeDamage(impactDamage);
+        }
 
         Destroy(gameObject);
     }
