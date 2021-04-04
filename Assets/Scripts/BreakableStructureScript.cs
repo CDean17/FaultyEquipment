@@ -9,11 +9,15 @@ public class BreakableStructureScript : MonoBehaviour
     public float health = 100f;
     public float deathTime = 0.2f;
     public float rayLength = 0.5f;
+    public float fallDamageMultiplier = 10f;
+    public float minDarkenPercent = 25f;
 
 
     //private parameters
+    private float maxHealth;
+    private Rigidbody2D rb2d;
+    private SpriteRenderer spr;
     public GameObject[] supports = new GameObject[4];
-    public GameObject[] supporting = new GameObject[4];
     public bool supported = false;
     private bool populatedSupports = false;
     private bool dead = false;
@@ -22,6 +26,10 @@ public class BreakableStructureScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        maxHealth = health;
+        spr = transform.GetComponent<SpriteRenderer>();
+        rb2d = transform.GetComponent<Rigidbody2D>();
+
         rayOriginOffset = new Vector3(0.5f, 0.5f, 0f);
         //If the object is set as an anchor it is automatically set as supported
         if (anchored)
@@ -46,10 +54,10 @@ public class BreakableStructureScript : MonoBehaviour
                     //check that the collided object is a breakable and is not the object that just added itself as a support
                     if (hits[i].collider.TryGetComponent(out BreakableStructureScript b))
                     {
-                        if (!b.populatedSupports)
+                        //if (!b.populatedSupports)
                         {
                             b.AddSupports(gameObject, i);
-                            supporting[i] = hits[i].collider.gameObject;
+                            supports[i] = hits[i].collider.gameObject;
                         }
 
                     }
@@ -57,9 +65,7 @@ public class BreakableStructureScript : MonoBehaviour
             }
             populatedSupports = true;
         }
-        
-        
-        
+
 
     }
 
@@ -93,7 +99,7 @@ public class BreakableStructureScript : MonoBehaviour
                     if (!b.populatedSupports)
                     {
                         b.AddSupports(gameObject, i);
-                        supporting[i] = hits[i].collider.gameObject;
+                        supports[i] = hits[i].collider.gameObject;
                     }
 
                 }
@@ -106,61 +112,50 @@ public class BreakableStructureScript : MonoBehaviour
     }
 
 
-    //called by objects supporting this object when they break to remove themselves from the supports array and check to see if the object 
-    //is still supported
-    void UpdateSupports(GameObject g)
+    //Called when a neigboring object is destroyed. Checks whether this object is still supported using a recursive function. If it isn't destroy this object and repeat the process.
+    private bool AlertConnected(GameObject g)
     {
-        //remove the destroyed object that called this method from the supports list
-        for(int i = 0; i<4; i++)
-        {
-            Debug.Log(g);
 
-            if (supports[i] == g)
+        bool result = false;
+        if (!anchored)
+        {
+            for (int i = 0; i < supports.Length; i++)
             {
-                
-                supports[i] = null;
-            }
-        }
-
-        //check if there are any objects still supporting this one
-        int remainingConnections = 0;
-        foreach(GameObject game in supports)
-        {
-            if(game != null)
-            {
-                remainingConnections++;
-            }
-        }
-
-        //if there are no longer any objects supporting this one destroy it after a delay
-        if(remainingConnections == 0)
-        {
-
-            StartCoroutine(ExecuteAftertime(deathTime));
-        }
-
-        
-    }
-
-
-    private void AlertConnected()
-    {
-        //when this object is destroyed (can replace with another function later if I want) update nearby objects by removing this one as a support
-        for(int i = 0; i < 4; i++)
-        {
-            //Debug.Log(supporting[i]);
-            if (supporting[i] != null) {
-
-                if (supporting[i].TryGetComponent(out BreakableStructureScript b))
+                if (supports[i] != null && supports[i] != g)
                 {
+                    result = supports[i].GetComponent<BreakableStructureScript>().AlertConnected(gameObject);
 
-                    b.UpdateSupports(gameObject);
-
-
+                    if (result)
+                    {
+                        break;
+                    }
                 }
             }
         }
-        StartCoroutine(DestroyAftertime(deathTime));
+        else
+        {
+            result = true;
+        }
+       
+
+        if(!result)
+            StartCoroutine(ExecuteAftertime(deathTime));
+
+        return result;
+    }
+
+
+    //called when an object is made not part of the structure. Tells all of its connected objects to make sure they are still supported
+    private void CheckSupports()
+    {
+        foreach (GameObject game in supports)
+        {
+            if(game != null)
+            {
+                game.GetComponent<BreakableStructureScript>().AlertConnected(gameObject);
+            }
+        }
+
     }
 
     public void TakeDamage(float damage)
@@ -171,20 +166,46 @@ public class BreakableStructureScript : MonoBehaviour
             StartCoroutine(ExecuteAftertime(deathTime));
             dead = true;
         }
+        float percentMax = (health / maxHealth);
+        percentMax = (100.0f - minDarkenPercent) * percentMax;
+        percentMax = percentMax + minDarkenPercent;
+        percentMax = percentMax / 100f;
+        spr.color = new Color(1 * percentMax, 1 * percentMax, 1 * percentMax, 1);
     }
 
-
+    //Call this when you want a piece to either become physics enabled or destroy itself if its health is low enough
     IEnumerator ExecuteAftertime(float time)
     {
         yield return new WaitForSeconds(time/2);
 
-        AlertConnected();
+        CheckSupports();
+        StartCoroutine(DestroyAftertime(deathTime));
     }
 
     IEnumerator DestroyAftertime(float time)
     {
         yield return new WaitForSeconds(time / 2);
+        if(health > 0)
+        {
+            supports = new GameObject[1];
+            rb2d.bodyType = RigidbodyType2D.Dynamic;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
+    }
 
-        Destroy(gameObject);
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(rb2d.bodyType == RigidbodyType2D.Dynamic)
+        {
+            TakeDamage(Mathf.Abs(rb2d.velocity.x) * fallDamageMultiplier);
+
+            if(collision.gameObject.TryGetComponent(out BreakableStructureScript b)){
+                b.TakeDamage(Mathf.Abs(rb2d.velocity.x) * fallDamageMultiplier);
+            }
+        }
     }
 }

@@ -147,7 +147,9 @@ MonoBehaviour:
   anchored: 0
   health: 100
   deathTime: 0.2
-  rayLength: 1
+  rayLength: 0.5
+  fallDamageMultiplier: 10
+  minDarkenPercent: 50
   supports:
   - {fileID: 0}
   - {fileID: 0}

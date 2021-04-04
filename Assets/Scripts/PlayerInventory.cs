@@ -8,7 +8,7 @@ public class PlayerInventory : MonoBehaviour
     // Start is called before the first frame update
     public List<GameObject> slots;
     public int selectedSlot = 0;
-    private int lastSlot = 0;
+   // private int lastSlot = 0;
     public int inventorySize = 3;
     public GameObject defaultObject;
     public GameObject collidingWep;
