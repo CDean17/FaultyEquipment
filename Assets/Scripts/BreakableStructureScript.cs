@@ -18,7 +18,6 @@ public class BreakableStructureScript : MonoBehaviour
     private Rigidbody2D rb2d;
     private SpriteRenderer spr;
     public GameObject[] supports = new GameObject[4];
-    public bool supported = false;
     private bool populatedSupports = false;
     private bool dead = false;
     private Vector3 rayOriginOffset;
@@ -31,14 +30,11 @@ public class BreakableStructureScript : MonoBehaviour
         rb2d = transform.GetComponent<Rigidbody2D>();
 
         rayOriginOffset = new Vector3(0.5f, 0.5f, 0f);
-        //If the object is set as an anchor it is automatically set as supported
-        if (anchored)
-            supported = true;
 
         //do ray checks in each cardinal direction to retrieve supporting objects.   
         //NOTE: in this scheme for both supports and hits arrays 0 is up, 1 is right, 2 bottom, 3 left
         RaycastHit2D[] hits = new RaycastHit2D[4];
-        if (supported)
+        if (anchored)
         {
             hits[0] = Physics2D.Raycast(transform.position + rayOriginOffset, Vector2.up, rayLength);
             hits[1] = Physics2D.Raycast(transform.position + rayOriginOffset, Vector2.right, rayLength);
@@ -54,12 +50,8 @@ public class BreakableStructureScript : MonoBehaviour
                     //check that the collided object is a breakable and is not the object that just added itself as a support
                     if (hits[i].collider.TryGetComponent(out BreakableStructureScript b))
                     {
-                        //if (!b.populatedSupports)
-                        {
                             b.AddSupports(gameObject, i);
                             supports[i] = hits[i].collider.gameObject;
-                        }
-
                     }
                 }
             }
@@ -76,7 +68,6 @@ public class BreakableStructureScript : MonoBehaviour
         //Stuarts wizard code replacing the switch statement
         direction = direction + 2 > 3 ? direction - 2 : direction + 2;
         supports[direction] = g;
-        supported = true;
 
         //if this object is now supported (and it should if everything went right) tell other objects near it to add is as a support
         RaycastHit2D[] hits = new RaycastHit2D[4];
@@ -89,19 +80,14 @@ public class BreakableStructureScript : MonoBehaviour
         //if there is a raycast hit and it is a breakable tell it to add this object as a support 
         for (int i = 0; i < 4; i++)
         {
-                
-            
+
             if (hits[i].collider != null)
             {
                 //check that the collided object is a breakable and is not the object that just added itself as a support
                 if (hits[i].collider.TryGetComponent(out BreakableStructureScript b) && i != direction)
                 {
-                    if (!b.populatedSupports)
-                    {
                         b.AddSupports(gameObject, i);
                         supports[i] = hits[i].collider.gameObject;
-                    }
-
                 }
             }
         }
@@ -136,34 +122,41 @@ public class BreakableStructureScript : MonoBehaviour
         {
             result = true;
         }
-       
 
-        if(!result)
-            StartCoroutine(ExecuteAftertime(deathTime));
 
         return result;
     }
 
 
     //called when an object is made not part of the structure. Tells all of its connected objects to make sure they are still supported
-    private void CheckSupports()
+    private void CheckSupports(GameObject g)
     {
+        bool result = false;
         foreach (GameObject game in supports)
         {
-            if(game != null)
+            if(game != null && game != g)
             {
-                game.GetComponent<BreakableStructureScript>().AlertConnected(gameObject);
+                result = game.GetComponent<BreakableStructureScript>().AlertConnected(gameObject);
+            }
+
+            if (result)
+            {
+                break;
             }
         }
 
+        if (!result)
+            StartCoroutine(UnsupportObject(deathTime));
+
     }
 
+    //Called by an object to damage this object
     public void TakeDamage(float damage)
     {
         health -= damage;
         if(health <= 0 && !dead)
         {
-            StartCoroutine(ExecuteAftertime(deathTime));
+            StartCoroutine(DestroyAftertime(deathTime));
             dead = true;
         }
         float percentMax = (health / maxHealth);
@@ -173,35 +166,50 @@ public class BreakableStructureScript : MonoBehaviour
         spr.color = new Color(1 * percentMax, 1 * percentMax, 1 * percentMax, 1);
     }
 
-    //Call this when you want a piece to either become physics enabled or destroy itself if its health is low enough
-    IEnumerator ExecuteAftertime(float time)
+    //Call this when you want a piece to become physics enabled
+    IEnumerator UnsupportObject(float time)
     {
-        yield return new WaitForSeconds(time/2);
+        yield return new WaitForSeconds(time);
 
-        CheckSupports();
-        StartCoroutine(DestroyAftertime(deathTime));
+        foreach (GameObject game in supports)
+        {
+            if (game != null)
+            {
+                 game.GetComponent<BreakableStructureScript>().CheckSupports(gameObject);
+            }
+
+        }
+
+        supports = new GameObject[1];
+        rb2d.bodyType = RigidbodyType2D.Dynamic;
+
     }
 
+
+    //Call this to destroy the object
     IEnumerator DestroyAftertime(float time)
     {
-        yield return new WaitForSeconds(time / 2);
-        if(health > 0)
+        yield return new WaitForSeconds(time);
+
+        foreach (GameObject game in supports)
         {
-            supports = new GameObject[1];
-            rb2d.bodyType = RigidbodyType2D.Dynamic;
+            if (game != null)
+            {
+                game.GetComponent<BreakableStructureScript>().CheckSupports(gameObject);
+            }
+
         }
-        else
-        {
-            Destroy(gameObject);
-        }
-        
+
+        Destroy(gameObject);
+
     }
 
+    //Called on a collision
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(rb2d.bodyType == RigidbodyType2D.Dynamic)
         {
-            TakeDamage(Mathf.Abs(rb2d.velocity.x) * fallDamageMultiplier);
+            TakeDamage(Mathf.Abs(rb2d.velocity.y) * fallDamageMultiplier);
 
             if(collision.gameObject.TryGetComponent(out BreakableStructureScript b)){
                 b.TakeDamage(Mathf.Abs(rb2d.velocity.x) * fallDamageMultiplier);
