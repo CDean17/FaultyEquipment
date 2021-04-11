@@ -23,6 +23,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: jfloorLObj
       objectReference: {fileID: 0}
+    - target: {fileID: 6939976522860543270, guid: cd9c268ac4dc42f4fb550fcea7f98ec3, type: 3}
+      propertyPath: anchored
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6939976522860543271, guid: cd9c268ac4dc42f4fb550fcea7f98ec3, type: 3}
       propertyPath: m_RootOrder
       value: 0
