@@ -43,3 +43,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 1859135025
+    locked: 0
+  - name: MainLayer
+    uniqueID: 3246282111
+    locked: 0
+  - name: Foreground and Effects
+    uniqueID: 2732513817
+    locked: 0
+  - name: UI
+    uniqueID: 232929885
+    locked: 0

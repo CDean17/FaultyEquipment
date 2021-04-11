@@ -12,6 +12,7 @@ public class PlayerInventory : MonoBehaviour
     public int inventorySize = 3;
     public GameObject defaultObject;
     public GameObject collidingWep;
+    private GameObject collidingBuildingObj;
     void Start()
     {
         slots = new List<GameObject>(inventorySize);
@@ -44,7 +45,15 @@ public class PlayerInventory : MonoBehaviour
             slots[selectedSlot].transform.position = transform.position;
             GameObject.Destroy(collidingWep);
         }
-        
+
+        if (collidingBuildingObj != null)
+        {
+            
+            if(collidingBuildingObj.TryGetComponent(out DoorScript b))
+            {
+                b.ToggleOpen();
+            }
+        }
     }
 
     public void OnSelectSlot(InputValue input)
@@ -78,12 +87,30 @@ public class PlayerInventory : MonoBehaviour
         {
             collidingWep = collision.gameObject;
         }
+
+        if (collision.gameObject.CompareTag("building"))
+        {
+            collidingBuildingObj = collision.gameObject;
+        }
     }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("building"))
+        {
+            collidingBuildingObj = collision.gameObject;
+        }
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("pickup"))
         {
             collidingWep = null;
+        }
+        if (collision.gameObject.CompareTag("building"))
+        {
+            collidingBuildingObj = null;
         }
     }
 
