@@ -15,6 +15,7 @@ public class twodPlayerMovement : MonoBehaviour
     public float airStrafeSpeed = 2f;
     public float maxStrafeSpeed = 10f;  //compare the x value of the current movespeed to the direction hit to determine whether to apply. That way the player still has control when moving fast
     public float moveDirection = 0;
+    private float upDown = 0;
     public float curSpeed = 10f;
     public bool canJump = true;
     private bool jumpNow = false;
@@ -78,6 +79,16 @@ public class twodPlayerMovement : MonoBehaviour
             }
         }
         
+        //Code for falling through platforms
+        if(upDown< 0)
+        {
+            gameObject.layer = 9;
+        }
+        else
+        {
+            gameObject.layer = 7;
+        }
+
 
         if (jumpNow)
         {
@@ -108,6 +119,7 @@ public class twodPlayerMovement : MonoBehaviour
 
     public void OnMove(InputValue input)
     {
+        upDown = input.Get<Vector2>().y;
         moveDirection = input.Get<Vector2>().x;
         if(moveDirection < 0)
         {
