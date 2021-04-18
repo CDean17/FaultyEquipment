@@ -127,9 +127,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletSpawn: {fileID: 4336575363008722919}
-  spawnedProjectile: {fileID: 8939806381623817238, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+  spawnedProjectile: {fileID: 4149988815259329941, guid: f2f7648e766960c4490d272127910d0a, type: 3}
   aimDirection: {x: 0, y: 0}
   aiming: 0
   releasedAim: 0
   aimSpeed: 75
-  fireDelay: 0.5
+  fireDelay: 0.25
+  firingArc: 70
+  projectilesToFire: 8
+  totalAmmo: 50

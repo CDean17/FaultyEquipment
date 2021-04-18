@@ -18,6 +18,9 @@ public class WeaponScript : MonoBehaviour
     //weapon properties
     public float aimSpeed = 75f;
     public float fireDelay = 0.5f;
+    public float firingArc = 0f;
+    public int projectilesToFire = 1;
+    public int totalAmmo = 50;
     
 
     // Start is called before the first frame update
@@ -88,12 +91,17 @@ public class WeaponScript : MonoBehaviour
 
     public void Fire()
     {
-        Debug.Log("Fired!");
-        //placeholder creates one accurate projectile
+        
         if(nextFire < Time.time)
         {
-            Instantiate(spawnedProjectile, bulletSpawn.transform.position, bulletSpawn.transform.rotation);
+            for (int i = 0; i < projectilesToFire;  i++)
+            {
+                Quaternion fireAngle = bulletSpawn.transform.rotation * Quaternion.Euler(new Vector3(0, 0, Random.Range(-(firingArc / 2), (firingArc / 2))));
+                Instantiate(spawnedProjectile, bulletSpawn.transform.position, fireAngle);
+            }
+
             nextFire = Time.time + fireDelay;
+            totalAmmo--;
         }
         
 

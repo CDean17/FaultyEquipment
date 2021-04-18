@@ -20,6 +20,7 @@ public class twodPlayerMovement : MonoBehaviour
     public bool canJump = true;
     private bool jumpNow = false;
     private bool aiming = false;
+    private bool ragDolling = false;
 
     public Collider2D groundDetection;
 
@@ -134,7 +135,7 @@ public class twodPlayerMovement : MonoBehaviour
 
     public void OnJump()
     {
-        if(canJump && !jumpNow)
+        if(canJump && !jumpNow && !ragDolling)
         {
             jumpNow = true;
             anim.SetBool("Jump", true);
