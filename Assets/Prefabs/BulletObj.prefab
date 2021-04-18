@@ -147,7 +147,11 @@ MonoBehaviour:
   initialSpeed: 40
   impactDamage: 30
   lifetime: 5
-  canExplode: 0
+  explodeOnImpact: 0
+  explosionRadius: 3
+  explosionForce: 100
+  explosionDamage: 40
   doesDamage: 1
   gravityEffect: 0
   impactSound: {fileID: 0}
+  baseExplosionObj: {fileID: 5557294203325486473, guid: 483c49a0be005d64ab4100cbf7d80763, type: 3}

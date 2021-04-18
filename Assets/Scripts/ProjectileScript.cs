@@ -8,10 +8,14 @@ public class ProjectileScript : MonoBehaviour
     public float initialSpeed = 40f;
     public float impactDamage = 30f;
     public float lifetime = 0f;
-    public bool canExplode = false;
+    public bool explodeOnImpact = false;
+    public float explosionRadius = 3f;
+    public float explosionForce = 100f;
+    public float explosionDamage = 40f;
     public bool doesDamage = true;
     public float gravityEffect = 0f;
     public AudioSource impactSound;
+    public GameObject baseExplosionObj;
 
     //some components we need to reference
     private Rigidbody2D rb2d;
@@ -36,6 +40,10 @@ public class ProjectileScript : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        float angle = Mathf.Atan2(rb2d.velocity.y, rb2d.velocity.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -43,6 +51,15 @@ public class ProjectileScript : MonoBehaviour
         if(collision.gameObject.TryGetComponent(out BreakableStructureScript b))
         {
             b.TakeDamage(impactDamage);
+        }
+
+        if (explodeOnImpact)
+        {
+            GameObject g = Instantiate(baseExplosionObj, transform.position, new Quaternion());
+            ExplosionScript e = g.GetComponent<ExplosionScript>();
+            e.radius = explosionRadius;
+            e.explosionDamage = explosionDamage;
+            e.explosionForce = explosionForce;
         }
 
         Destroy(gameObject);

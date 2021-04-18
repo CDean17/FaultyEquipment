@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6273068498874237671
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3475842166553176989, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2321612974454686582, guid: a1ff3a6f0438c914bb22af24b2ebdb28, type: 3}
+    - target: {fileID: 4257035238542885079, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: lifetime
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4257035238542885079, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: impactDamage
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4257035238542885079, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: initialSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4257035238542885079, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: gravityEffect
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4257035238542885079, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: explodeOnImpact
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6654499695433415507, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6654499695433415507, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6654499695433415507, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6654499695433415507, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6654499695433415507, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6654499695433415507, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6654499695433415507, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6654499695433415507, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6654499695433415507, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6654499695433415507, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6654499695433415507, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7704990061089485920, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7704990061089485920, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939806381623817238, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
+      propertyPath: m_Name
+      value: RocketObj
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}

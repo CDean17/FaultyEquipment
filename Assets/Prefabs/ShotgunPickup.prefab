@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8176926461262358165}
   m_Layer: 7
   m_Name: ShotgunPickup
-  m_TagString: Untagged
+  m_TagString: pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spr: {fileID: 0}
-  weapon: {fileID: 0}
+  weapon: {fileID: 6634143078673936610, guid: 97874811ed7a5e541b8b0e5d3728c6ca, type: 3}
 --- !u!1 &7867937981365669893
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ public class BreakableStructureScript : MonoBehaviour
 
     //private parameters
     private float maxHealth;
-    private Rigidbody2D rb2d;
+    public Rigidbody2D rb2d;
     private SpriteRenderer spr;
     public GameObject[] supports = new GameObject[4];
     private bool dead = false;
