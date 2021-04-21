@@ -128,6 +128,8 @@ MonoBehaviour:
   moveDirection: 0
   curSpeed: 10
   canJump: 0
+  ragDollRotateSpeed: 400
+  ragDollRestPeriod: 1
   groundDetection: {fileID: 1858628001942437135}
 --- !u!50 &1858628001942437128
 Rigidbody2D:

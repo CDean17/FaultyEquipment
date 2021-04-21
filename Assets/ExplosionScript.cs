@@ -9,11 +9,14 @@ public class ExplosionScript : MonoBehaviour
     public float radius = 3f;
     public float explosionForce = 100f;
     public float explosionDamage = 50f;
+    public float throwAngle = 40f;
+    public float throwForce = 100f;
 
     // Start is called before the first frame update
     void Start()
     {
         Explode();
+        Destroy(gameObject);
     }
 
     void Explode()
@@ -23,14 +26,27 @@ public class ExplosionScript : MonoBehaviour
 
         foreach(Collider2D c in hits)
         {
-            if(c.TryGetComponent(out BreakableStructureScript b))
+            float dist = Vector2.Distance(transform.position, c.transform.position);
+            dist = dist / radius;
+            dist = 1f - dist;
+            if (c.TryGetComponent(out BreakableStructureScript b))
             {
-                //do damage based on distance
-                float dist = Vector2.Distance(transform.position, b.transform.position);
-                dist = dist / radius;
-                dist = 1f - dist;
+
                 b.TakeDamage(explosionDamage);
                 AddExplosionForce(b.rb2d, explosionForce, transform.position, radius);
+            }
+
+            if(c.TryGetComponent(out  twodPlayerMovement t))
+            {
+                
+                if(c.transform.position.x < transform.position.x)
+                {
+                    t.RagdollPlayer(new Vector3(0, 0, throwAngle), throwForce * dist);
+                }
+                else
+                {
+                    t.RagdollPlayer(new Vector3(0, 0, 360 - throwAngle), throwForce * dist);
+                }
             }
         }
 

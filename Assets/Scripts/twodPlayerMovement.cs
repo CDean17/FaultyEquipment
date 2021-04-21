@@ -21,6 +21,13 @@ public class twodPlayerMovement : MonoBehaviour
     private bool jumpNow = false;
     private bool aiming = false;
     private bool ragDolling = false;
+    private bool rotateRight = true;
+    public float ragDollRotateSpeed = 5f;
+    public float ragDollRestPeriod = 1f;
+    private float getUpTime = 0f;
+    private Vector3 launchDirection;
+    private bool launchNow = false;
+    private float launchForce;
 
     public Collider2D groundDetection;
 
@@ -41,7 +48,21 @@ public class twodPlayerMovement : MonoBehaviour
     {
         
    
-        if(rb2d.velocity.x != 0)
+        
+
+
+    }
+
+    private void FixedUpdate()
+    {
+        if (launchNow)
+        {
+            launchNow = false;
+            Debug.Log(Quaternion.AngleAxis(launchDirection.z, Vector3.forward) * Vector3.up * launchForce);
+            rb2d.AddForce(Quaternion.AngleAxis(launchDirection.z, Vector3.forward) * Vector3.up * launchForce);
+        }
+
+        if (rb2d.velocity.x != 0)
         {
             anim.SetBool("Walking", true);
         }
@@ -50,11 +71,6 @@ public class twodPlayerMovement : MonoBehaviour
             anim.SetBool("Walking", false);
         }
 
-
-    }
-
-    private void FixedUpdate()
-    {
         if (aiming)
         {
             curSpeed = aimMoveSpeed;
@@ -65,20 +81,50 @@ public class twodPlayerMovement : MonoBehaviour
         }
 
         float yFix = rb2d.velocity.y;
-        if (canJump)
+        //Determine if ragdolling/have controll of character
+        if (ragDolling)
         {
-            rb2d.velocity = new Vector2(moveDirection * curSpeed, yFix);
+            if (rotateRight && !canJump)
+            {
+                transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles + new Vector3(0, 0, ragDollRotateSpeed * Time.deltaTime));
+            }
+            else if(!rotateRight && !canJump)
+            {
+                transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles + new Vector3(0, 0, -ragDollRotateSpeed * Time.deltaTime));
+            }
+            else
+            {
+                transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90));
+            }
+
+            if(canJump && getUpTime > Time.time)
+            {
+                ragDolling = false;
+                transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            }
+
+
         }
         else
         {
-            if(rb2d.velocity.x < maxStrafeSpeed && moveDirection > 0)
+            //If the player is in control then set their movement velocity using these equations relevant to if they are in the air or not
+            if (canJump)
             {
-                rb2d.velocity = new Vector2(rb2d.velocity.x + (airStrafeSpeed), yFix);
-            }else if(rb2d.velocity.x > -maxStrafeSpeed && moveDirection < 0)
+                rb2d.velocity = new Vector2(moveDirection * curSpeed, yFix);
+            }
+            else
             {
-                rb2d.velocity = new Vector2(rb2d.velocity.x - (airStrafeSpeed), yFix);
+                if (rb2d.velocity.x < maxStrafeSpeed && moveDirection > 0)
+                {
+                    rb2d.velocity = new Vector2(rb2d.velocity.x + (airStrafeSpeed), yFix);
+                }
+                else if (rb2d.velocity.x > -maxStrafeSpeed && moveDirection < 0)
+                {
+                    rb2d.velocity = new Vector2(rb2d.velocity.x - (airStrafeSpeed), yFix);
+                }
             }
         }
+        
         
         //Code for falling through platforms
         if(upDown< 0)
@@ -115,8 +161,19 @@ public class twodPlayerMovement : MonoBehaviour
             
           anim.SetBool("Grounded", true);
 
+
         // }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (ragDolling)
+        {
+            getUpTime = Time.time + ragDollRestPeriod;
+        }
+    }
+
+
 
     public void OnMove(InputValue input)
     {
@@ -161,6 +218,29 @@ public class twodPlayerMovement : MonoBehaviour
     public void OnAimCanceled()
     {
         aiming = false;
+    }
+
+    public void RagdollPlayer(Vector3 launchDirection, float throwForce)
+    {
+        launchForce = throwForce;
+        this.launchDirection = launchDirection;
+        launchNow = true;
+
+        ragDolling = true;
+        //Debug.Log("Threw Player! Direction: " + launchDirection +"  Force: " + throwForce);
+        
+
+        if (launchDirection.z > 180)
+        {
+            rotateRight = false;
+        }
+        else
+        {
+            rotateRight = true;
+        }
+
+        getUpTime = Time.time + ragDollRestPeriod;
+
     }
 
 

@@ -48,4 +48,5 @@ MonoBehaviour:
   radius: 3
   explosionForce: 100
   explosionDamage: 50
-  hits: []
+  throwAngle: 40
+  throwForce: 50000
