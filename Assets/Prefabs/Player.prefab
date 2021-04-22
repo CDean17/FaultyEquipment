@@ -118,8 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7a9331f610a2be47ac478b972a953f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpParticleSpawn: {fileID: 0}
-  jumpParticle: {fileID: 0}
+  jumpParticleSpawn: {fileID: 5168890180652410230}
+  jumpParticle: {fileID: 5058239656612303762, guid: 06d09c7e9566cbb4782c3e6a3e6d98e4, type: 3}
   jumpPower: 15
   groundMoveSpeed: 10
   aimMoveSpeed: 4
@@ -128,6 +128,7 @@ MonoBehaviour:
   moveDirection: 0
   curSpeed: 10
   canJump: 0
+  ragDolling: 0
   ragDollRotateSpeed: 400
   ragDollRestPeriod: 1
   groundDetection: {fileID: 1858628001942437135}
@@ -304,6 +305,10 @@ MonoBehaviour:
   inventorySize: 3
   defaultObject: {fileID: 2510480716865995066, guid: 5cd79be3fafcef14d9529a59cead0f72, type: 3}
   collidingWep: {fileID: 0}
+  maxHealth: 100
+  currentHealth: 0
+  deadPlayerObj: {fileID: 542269522247884839, guid: 2e0a765e75e6f4e4380d09f2c1ae5830, type: 3}
+  foreverBox: {fileID: 0}
 --- !u!1 &5168890180652410230
 GameObject:
   m_ObjectHideFlags: 0

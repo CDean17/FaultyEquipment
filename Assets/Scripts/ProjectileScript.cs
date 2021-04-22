@@ -53,6 +53,11 @@ public class ProjectileScript : MonoBehaviour
             b.TakeDamage(impactDamage);
         }
 
+        if(collision.gameObject.TryGetComponent(out PlayerInventory p))
+        {
+            p.TakeDamage(impactDamage);
+        }
+
         if (explodeOnImpact)
         {
             GameObject g = Instantiate(baseExplosionObj, transform.position, new Quaternion());

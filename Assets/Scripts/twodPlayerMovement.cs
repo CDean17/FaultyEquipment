@@ -20,7 +20,7 @@ public class twodPlayerMovement : MonoBehaviour
     public bool canJump = true;
     private bool jumpNow = false;
     private bool aiming = false;
-    private bool ragDolling = false;
+    public bool ragDolling = false;
     private bool rotateRight = true;
     public float ragDollRotateSpeed = 5f;
     public float ragDollRestPeriod = 1f;
@@ -97,7 +97,7 @@ public class twodPlayerMovement : MonoBehaviour
                 transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90));
             }
 
-            if(canJump && getUpTime > Time.time)
+            if(canJump && getUpTime < Time.time)
             {
                 ragDolling = false;
                 transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
@@ -165,7 +165,8 @@ public class twodPlayerMovement : MonoBehaviour
         // }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (ragDolling)
         {

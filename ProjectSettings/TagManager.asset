@@ -6,6 +6,7 @@ TagManager:
   tags:
   - pickup
   - building
+  - deathbox
   layers:
   - Default
   - TransparentFX

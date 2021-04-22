@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -13,8 +14,45 @@ public class PlayerInventory : MonoBehaviour
     public GameObject defaultObject;
     public GameObject collidingWep;
     private GameObject collidingBuildingObj;
+
+    //Health related variables
+    public float maxHealth = 100f;
+    public float currentHealth;
+    public GameObject deadPlayerObj;
+    public GameObject foreverBox;
+    private GameObject gameManager;
+    private Rigidbody2D rb2d;
+    private SpriteRenderer spr;
     void Start()
     {
+        //get access to gameManager
+        gameManager = GameObject.FindGameObjectWithTag("GameController");
+
+        //Set color based on number of existing players
+        spr = transform.GetComponent<SpriteRenderer>();
+        int playerNumber = GameObject.FindGameObjectsWithTag("Player").Length;
+
+        switch (playerNumber)
+        {
+            case 1:
+                
+                break;
+            case 2:
+                spr.color = new Color(0.7f, 0.3f, 0.3f);
+                break;
+            case 3:
+                spr.color = new Color(0.7f, 0.7f, 0.3f);
+                break;
+            case 4:
+                spr.color = new Color(0.3f, 0.3f, 0.7f);
+                break;
+        }
+
+
+        foreverBox = GameObject.FindGameObjectWithTag("deathbox");
+        rb2d = transform.GetComponent<Rigidbody2D>();
+        currentHealth = maxHealth;
+
         slots = new List<GameObject>(inventorySize);
 
         for(int i=0; i<inventorySize; i++)
@@ -142,5 +180,32 @@ public class PlayerInventory : MonoBehaviour
     public void OnAimCancelled()
     {
         slots[selectedSlot].GetComponent<WeaponScript>().aiming = false;
+    }
+
+    public void OnBack()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.name == "LobbyScene")
+        {
+            gameManager.GetComponent<GameManagerScript>().dropPlayer(gameObject);
+            Destroy(gameObject);
+        }
+    }
+
+    public void OnStart()
+    {
+        gameManager.GetComponent<GameManagerScript>().initializeGame();
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+
+        if(currentHealth <= 0f)
+        {
+            Instantiate(deadPlayerObj, transform.position, transform.rotation);
+            rb2d.velocity = Vector3.zero;
+            transform.position = foreverBox.transform.position;
+        }
     }
 }

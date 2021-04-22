@@ -48,6 +48,12 @@ public class ExplosionScript : MonoBehaviour
                     t.RagdollPlayer(new Vector3(0, 0, 360 - throwAngle), throwForce * dist);
                 }
             }
+
+            if (c.gameObject.TryGetComponent(out PlayerInventory p))
+            {
+                p.TakeDamage(explosionDamage * dist);
+            }
+
         }
 
         //Destroy(gameObject);

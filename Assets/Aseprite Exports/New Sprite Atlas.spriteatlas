@@ -32,12 +32,16 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 2800000, guid: 175f5e9b7dc015643a80850026f60cd5, type: 3}
-    totalSpriteSurfaceArea: 832
+    - {fileID: 102900000, guid: 000ee86978a9b6d4eb96d30c37a9dc36, type: 3}
+    totalSpriteSurfaceArea: 1024
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 3832209254182161444, guid: 36ce5253045f10e41bf66d18bfc3cb09, type: 3}
+  - {fileID: 8230884934102076412, guid: 359353b3ebcf16c4fb91ca193b8cb59f, type: 3}
+  - {fileID: 2578208561127200501, guid: 2878438b753f74748aa1211f691157d7, type: 3}
   - {fileID: 4417842103981365104, guid: 175f5e9b7dc015643a80850026f60cd5, type: 3}
   - {fileID: 1801508169391956272, guid: 175f5e9b7dc015643a80850026f60cd5, type: 3}
   - {fileID: -6536475633307553873, guid: 175f5e9b7dc015643a80850026f60cd5, type: 3}
@@ -52,6 +56,9 @@ SpriteAtlas:
   - {fileID: -3049630353786785849, guid: 175f5e9b7dc015643a80850026f60cd5, type: 3}
   - {fileID: -5856970931966116627, guid: 175f5e9b7dc015643a80850026f60cd5, type: 3}
   m_PackedSpriteNamesToIndex:
+  - testBG0
+  - testFloor0
+  - testWall0
   - DirtTiles_11
   - DirtTiles_10
   - DirtTiles_12
