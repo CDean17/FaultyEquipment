@@ -58,7 +58,7 @@ public class twodPlayerMovement : MonoBehaviour
         if (launchNow)
         {
             launchNow = false;
-            Debug.Log(Quaternion.AngleAxis(launchDirection.z, Vector3.forward) * Vector3.up * launchForce);
+           // Debug.Log(Quaternion.AngleAxis(launchDirection.z, Vector3.forward) * Vector3.up * launchForce);
             rb2d.AddForce(Quaternion.AngleAxis(launchDirection.z, Vector3.forward) * Vector3.up * launchForce);
         }
 

@@ -20,36 +20,46 @@ public class PlayerInventory : MonoBehaviour
     public float currentHealth;
     public GameObject deadPlayerObj;
     public GameObject foreverBox;
-    private GameObject gameManager;
     private Rigidbody2D rb2d;
     private SpriteRenderer spr;
+    public bool dead = false;
+
+    //Gamemanagement Variables
+    private GameObject gameManager;
+    public GameObject uIMain;
+    public int playerNumber;
+    private Color pColor;
+
+    public float timeTillUpdateGame = 0.5f;
     void Start()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
         //get access to gameManager
         gameManager = GameObject.FindGameObjectWithTag("GameController");
 
         //Set color based on number of existing players
         spr = transform.GetComponent<SpriteRenderer>();
-        int playerNumber = GameObject.FindGameObjectsWithTag("Player").Length;
+        playerNumber = GameObject.FindGameObjectsWithTag("Player").Length;
 
         switch (playerNumber)
         {
             case 1:
-                
+                pColor = spr.color;
                 break;
             case 2:
-                spr.color = new Color(0.7f, 0.3f, 0.3f);
+                pColor = new Color(0.7f, 0.3f, 0.3f);
                 break;
             case 3:
-                spr.color = new Color(0.7f, 0.7f, 0.3f);
+                pColor = new Color(0.7f, 0.7f, 0.3f);
                 break;
             case 4:
-                spr.color = new Color(0.3f, 0.3f, 0.7f);
+                pColor = new Color(0.3f, 0.3f, 0.7f);
                 break;
         }
 
+        spr.color = pColor;
 
-        foreverBox = GameObject.FindGameObjectWithTag("deathbox");
+
         rb2d = transform.GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
 
@@ -75,6 +85,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void OnPickup()
     {
+        //Code for picking up weapons
         if(collidingWep != null)
         {
             GameObject g = slots[selectedSlot];
@@ -84,6 +95,8 @@ public class PlayerInventory : MonoBehaviour
             GameObject.Destroy(collidingWep);
         }
 
+
+        //Code for interacting with objects
         if (collidingBuildingObj != null)
         {
             
@@ -200,12 +213,77 @@ public class PlayerInventory : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        uIMain.GetComponent<PlayerUIScript>().UpdateHealthbar(currentHealth/maxHealth);
 
-        if(currentHealth <= 0f)
+        if (currentHealth <= 0f)
         {
-            Instantiate(deadPlayerObj, transform.position, transform.rotation);
+            GameObject b = Instantiate(deadPlayerObj, transform.position, transform.rotation);
+            b.GetComponent<SpriteRenderer>().color = pColor;
             rb2d.velocity = Vector3.zero;
             transform.position = foreverBox.transform.position;
+            dead = true;
+
+            
+            StartCoroutine(DeathUpdate(timeTillUpdateGame));
         }
     }
+
+    IEnumerator DeathUpdate(float time)
+    {
+        yield return new WaitForSeconds(time);
+        
+        gameManager.GetComponent<GameManagerScript>().checkAlive();
+        
+    }
+
+    private void OnSceneLoaded(Scene aScene, LoadSceneMode aMode)
+    {
+
+        switch (playerNumber)
+        {
+            case 1:
+                uIMain = GameObject.Find("Player1UI");
+                break;
+            case 2:
+                uIMain = GameObject.Find("Player2UI");
+                spr.color = new Color(0.7f, 0.3f, 0.3f);
+                break;
+            case 3:
+                uIMain = GameObject.Find("Player3UI");
+                spr.color = new Color(0.7f, 0.7f, 0.3f);
+                break;
+            case 4:
+                uIMain = GameObject.Find("Player4UI");
+                spr.color = new Color(0.3f, 0.3f, 0.7f);
+                break;
+        }
+
+        foreverBox = GameObject.FindGameObjectWithTag("deathbox");
+        
+    }
+
+    public void resetInventory()
+    {
+        uIMain.GetComponent<PlayerUIScript>().UpdateHealthbar(1);
+        uIMain.GetComponent<PlayerUIScript>().UIReset();
+        //reset inventory
+        for (int i = 0; i < inventorySize; i++)
+        {
+            Destroy(slots[selectedSlot]);
+
+        }
+        slots = new List<GameObject>(inventorySize);
+        for (int i = 0; i < inventorySize; i++)
+        {
+            slots.Add(Instantiate(defaultObject, transform));
+            slots[selectedSlot].transform.position = transform.position;
+
+        }
+        for (int i = 1; i < inventorySize; i++)
+        {
+            slots[i].SetActive(false);
+        }
+    }
+
+
 }

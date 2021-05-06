@@ -7,6 +7,10 @@ TagManager:
   - pickup
   - building
   - deathbox
+  - p1UI
+  - p2UI
+  - p3UI
+  - p4UI
   layers:
   - Default
   - TransparentFX
