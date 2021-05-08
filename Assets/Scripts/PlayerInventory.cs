@@ -8,6 +8,7 @@ public class PlayerInventory : MonoBehaviour
 {
     // Start is called before the first frame update
     public List<GameObject> slots;
+    public List<WeaponScriptableObjects> slotsScriptableObs;
     public int selectedSlot = 0;
    // private int lastSlot = 0;
     public int inventorySize = 3;
@@ -67,14 +68,11 @@ public class PlayerInventory : MonoBehaviour
 
         for(int i=0; i<inventorySize; i++)
         {
-            slots.Add(Instantiate(defaultObject, transform));
-            slots[selectedSlot].transform.position = transform.position;
+            slots.Add(null);
+            slotsScriptableObs.Add(null);
 
         }
-        for(int i = 1; i<inventorySize; i++)
-        {
-            slots[i].SetActive(false);
-        }
+
     }
 
     // Update is called once per frame
@@ -85,13 +83,41 @@ public class PlayerInventory : MonoBehaviour
 
     public void OnPickup()
     {
+
         //Code for picking up weapons
         if(collidingWep != null)
         {
+            //If the weapon is empty destroy it. If not drop it on the ground.
             GameObject g = slots[selectedSlot];
-            GameObject.Destroy(g);
+            if(g != null)
+            {
+                if (g.GetComponent<WeaponScript>().totalAmmo <= 0)
+                {
+                    Destroy(g);
+                    slots[selectedSlot] = null;
+                }
+                else
+                {
+                    dropCurrentWep();
+                }
+            }
+            else
+            {
+                Destroy(g);
+                slots[selectedSlot] = null;
+            }
+            
+            
+            //create and add a new weapon based on the weaponPickup obj
             slots[selectedSlot] = Instantiate(collidingWep.GetComponent<PickupScript>().weapon, transform);
             slots[selectedSlot].transform.position = transform.position;
+            //set ammo of new weapon to saved value in pickup
+            slots[selectedSlot].GetComponent<WeaponScript>().totalAmmo = collidingWep.GetComponent<PickupScript>().currentAmmo;
+            //get scriptable object from pickup and put in in parallel array
+            slotsScriptableObs[selectedSlot] = collidingWep.GetComponent<PickupScript>().scriptObj;
+            //call some function on UI to display weapon
+            uIMain.GetComponent<PlayerUIScript>().UpdateSlot(selectedSlot, slotsScriptableObs[selectedSlot].weaponImage);
+
             GameObject.Destroy(collidingWep);
         }
 
@@ -107,6 +133,34 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+    public void OnDrop()
+    {
+        if (slots[selectedSlot] != null)
+        {
+            dropCurrentWep();
+        }
+        
+    }
+
+    public void dropCurrentWep()
+    {
+        if(slots[selectedSlot].GetComponent<WeaponScript>().totalAmmo > 0)
+        {
+            //create a new pickup based on currently equipped wep. Set its position and give it accurate leftover ammo
+            GameObject g = Instantiate(slotsScriptableObs[selectedSlot].weaponPickupObj, transform.position, transform.rotation);
+            g.GetComponent<PickupScript>().setStartAmmo = false;
+            g.GetComponent<PickupScript>().currentAmmo = slots[selectedSlot].GetComponent<WeaponScript>().totalAmmo;
+        }
+        //destroy equipped weapon and set values to defaults
+        Destroy(slots[selectedSlot]);
+        slots[selectedSlot] = null;
+        slotsScriptableObs[selectedSlot] = null;
+
+        //Update UI
+        uIMain.GetComponent<PlayerUIScript>().ClearSlot(selectedSlot);
+
+    }
+
     public void OnSelectSlot(InputValue input)
     {
        
@@ -114,21 +168,39 @@ public class PlayerInventory : MonoBehaviour
 
         if (v.x == -1)
         {
-            slots[selectedSlot].SetActive(false);
+            if (slots[selectedSlot] != null)
+            {
+                slots[selectedSlot].SetActive(false);
+            }
             selectedSlot = 0;
-            slots[selectedSlot].SetActive(true);
+            if (slots[selectedSlot] != null)
+            {
+                slots[selectedSlot].SetActive(true);
+            }
         }
         else if(v.y == 1)
         {
-            slots[selectedSlot].SetActive(false);
+            if (slots[selectedSlot] != null)
+            {
+                slots[selectedSlot].SetActive(false);
+            }
             selectedSlot = 1;
-            slots[selectedSlot].SetActive(true);
+            if (slots[selectedSlot] != null)
+            {
+                slots[selectedSlot].SetActive(true);
+            }   
         }
         else if(v.x == 1)
         {
-            slots[selectedSlot].SetActive(false);
+            if (slots[selectedSlot] != null)
+            {
+                slots[selectedSlot].SetActive(false);
+            }
             selectedSlot = 2;
-            slots[selectedSlot].SetActive(true);
+            if (slots[selectedSlot] != null)
+            {
+                slots[selectedSlot].SetActive(true);
+            }
         }
     }
 
@@ -151,6 +223,11 @@ public class PlayerInventory : MonoBehaviour
         {
             collidingBuildingObj = collision.gameObject;
         }
+
+        if (collision.gameObject.CompareTag("pickup"))
+        {
+            collidingWep = collision.gameObject;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -167,25 +244,37 @@ public class PlayerInventory : MonoBehaviour
 
     public void OnMove(InputValue input)
     {
-        slots[selectedSlot].GetComponent<WeaponScript>().aimDirection = input.Get<Vector2>();
+        if(slots[selectedSlot] != null)
+        {
+            slots[selectedSlot].GetComponent<WeaponScript>().aimDirection = input.Get<Vector2>();
+        }
+        
     }
 
     public void OnFire()
     {
-        slots[selectedSlot].GetComponent<WeaponScript>().Fire();
+        if(slots[selectedSlot] != null)
+        {
+            slots[selectedSlot].GetComponent<WeaponScript>().Fire();
+        }
+        
     }
 
     public void OnAim(InputValue input)
     {
-        if(input.Get<float>() == 0)
+        if (slots[selectedSlot] != null)
         {
-            slots[selectedSlot].GetComponent<WeaponScript>().aiming = false;
-            slots[selectedSlot].GetComponent<WeaponScript>().releasedAim = true;
+            if (input.Get<float>() == 0)
+            {
+                slots[selectedSlot].GetComponent<WeaponScript>().aiming = false;
+                slots[selectedSlot].GetComponent<WeaponScript>().releasedAim = true;
+            }
+            else
+            {
+                slots[selectedSlot].GetComponent<WeaponScript>().aiming = true;
+            }
         }
-        else
-        {
-            slots[selectedSlot].GetComponent<WeaponScript>().aiming = true;
-        }
+        
         
         //Debug.Log("Aiming!");
     }
@@ -275,14 +364,10 @@ public class PlayerInventory : MonoBehaviour
         slots = new List<GameObject>(inventorySize);
         for (int i = 0; i < inventorySize; i++)
         {
-            slots.Add(Instantiate(defaultObject, transform));
-            slots[selectedSlot].transform.position = transform.position;
+            slots.Add(null);
 
         }
-        for (int i = 1; i < inventorySize; i++)
-        {
-            slots[i].SetActive(false);
-        }
+
     }
 
 

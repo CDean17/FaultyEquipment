@@ -24235,6 +24235,54 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4217672395552304820, guid: 91cae9a5f6433ff4bb5cef8fc0287dd7, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217672395714726155, guid: 91cae9a5f6433ff4bb5cef8fc0287dd7, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217672395773097856, guid: 91cae9a5f6433ff4bb5cef8fc0287dd7, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217672395849150318, guid: 91cae9a5f6433ff4bb5cef8fc0287dd7, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217672395910896768, guid: 91cae9a5f6433ff4bb5cef8fc0287dd7, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217672395960674144, guid: 91cae9a5f6433ff4bb5cef8fc0287dd7, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217672396099872452, guid: 91cae9a5f6433ff4bb5cef8fc0287dd7, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217672396205805270, guid: 91cae9a5f6433ff4bb5cef8fc0287dd7, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217672396417093616, guid: 91cae9a5f6433ff4bb5cef8fc0287dd7, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217672396429734652, guid: 91cae9a5f6433ff4bb5cef8fc0287dd7, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217672396765670059, guid: 91cae9a5f6433ff4bb5cef8fc0287dd7, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217672397187057957, guid: 91cae9a5f6433ff4bb5cef8fc0287dd7, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4217672397226896300, guid: 91cae9a5f6433ff4bb5cef8fc0287dd7, type: 3}
       propertyPath: m_Name
       value: InGameUI

@@ -43,4 +43,28 @@ public class PlayerUIScript : MonoBehaviour
     {
         healthBar.fillAmount = hDecimal;
     }
+
+    public void UpdateSlot(int slotNum, Sprite img)
+    {
+        switch (slotNum)
+        {
+            case 0:
+                slot1.sprite = img;
+                slot1.color = Color.white;
+                break;
+            case 1:
+                slot2.sprite = img;
+                slot2.color = Color.white;
+                break;
+            case 3:
+                slot3.sprite = img;
+                slot3.color = Color.white;
+                break;
+        }
+    }
+
+    public void ClearSlot(int slotNum)
+    {
+        slot1.color = Color.clear;
+    }
 }

@@ -92,7 +92,7 @@ public class WeaponScript : MonoBehaviour
     public void Fire()
     {
         
-        if(nextFire < Time.time)
+        if(nextFire < Time.time && totalAmmo > 0)
         {
             for (int i = 0; i < projectilesToFire;  i++)
             {

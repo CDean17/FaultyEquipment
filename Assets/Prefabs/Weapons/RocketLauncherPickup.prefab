@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7867937980332870169, guid: f662f5f4d01c14846b5648c900cfa5f0, type: 3}
       propertyPath: m_Name
-      value: RocketlauncherPickup
+      value: RocketLauncherPickup
       objectReference: {fileID: 0}
     - target: {fileID: 7867937980332870170, guid: f662f5f4d01c14846b5648c900cfa5f0, type: 3}
       propertyPath: m_Sprite
@@ -63,5 +63,9 @@ PrefabInstance:
       propertyPath: weapon
       value: 
       objectReference: {fileID: 8693000282116097466, guid: 11b79e39086ddc2478bfc810f529c967, type: 3}
+    - target: {fileID: 8176926461262358165, guid: f662f5f4d01c14846b5648c900cfa5f0, type: 3}
+      propertyPath: scriptObj
+      value: 
+      objectReference: {fileID: 11400000, guid: 2ad002bea43e641469746ffed25b7fd2, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f662f5f4d01c14846b5648c900cfa5f0, type: 3}
