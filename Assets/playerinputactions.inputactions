@@ -19,7 +19,7 @@
                     "id": "223a99c5-d7ac-4969-be6c-f3c31ab47499",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press(behavior=2)"
                 },
                 {
                     "name": "Jump",
@@ -346,7 +346,7 @@
                 {
                     "name": "",
                     "id": "b88489a9-a78b-46c9-b331-fd388069f53b",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/select",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

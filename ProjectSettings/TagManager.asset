@@ -11,6 +11,7 @@ TagManager:
   - p2UI
   - p3UI
   - p4UI
+  - roundScoreUI
   layers:
   - Default
   - TransparentFX

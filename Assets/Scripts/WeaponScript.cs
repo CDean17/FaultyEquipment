@@ -14,6 +14,8 @@ public class WeaponScript : MonoBehaviour
     public bool aiming = false;
     public bool releasedAim = false;
     private float nextFire = 0;
+    private bool firing = false;
+
 
     //weapon properties
     public float aimSpeed = 75f;
@@ -21,11 +23,14 @@ public class WeaponScript : MonoBehaviour
     public float firingArc = 0f;
     public int projectilesToFire = 1;
     public int totalAmmo = 50;
+    public bool droppedOnFire = false;
+    private AudioSource src;
     
 
     // Start is called before the first frame update
     void Start()
     {
+        src = gameObject.GetComponent<AudioSource>();
         attachedPlayer = transform.parent.gameObject;
         spr = transform.GetComponent<SpriteRenderer>();
 
@@ -77,6 +82,28 @@ public class WeaponScript : MonoBehaviour
             }
 
         }
+
+        if (firing)
+        {
+            if (nextFire < Time.time && totalAmmo > 0)
+            {
+                for (int i = 0; i < projectilesToFire; i++)
+                {
+                    Quaternion fireAngle = bulletSpawn.transform.rotation * Quaternion.Euler(new Vector3(0, 0, Random.Range(-(firingArc / 2), (firingArc / 2))));
+                    Instantiate(spawnedProjectile, bulletSpawn.transform.position, fireAngle);
+                }
+
+
+                src.Play();
+                nextFire = Time.time + fireDelay;
+                totalAmmo--;
+
+                if (droppedOnFire == true)
+                {
+                    attachedPlayer.GetComponent<PlayerInventory>().dropCurrentWep();
+                }
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -91,18 +118,8 @@ public class WeaponScript : MonoBehaviour
 
     public void Fire()
     {
-        
-        if(nextFire < Time.time && totalAmmo > 0)
-        {
-            for (int i = 0; i < projectilesToFire;  i++)
-            {
-                Quaternion fireAngle = bulletSpawn.transform.rotation * Quaternion.Euler(new Vector3(0, 0, Random.Range(-(firingArc / 2), (firingArc / 2))));
-                Instantiate(spawnedProjectile, bulletSpawn.transform.position, fireAngle);
-            }
 
-            nextFire = Time.time + fireDelay;
-            totalAmmo--;
-        }
+        firing = !firing;
         
 
     }

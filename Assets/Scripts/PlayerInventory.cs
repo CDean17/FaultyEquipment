@@ -292,6 +292,11 @@ public class PlayerInventory : MonoBehaviour
             gameManager.GetComponent<GameManagerScript>().dropPlayer(gameObject);
             Destroy(gameObject);
         }
+        else
+        {
+            gameManager.GetComponent<GameManagerScript>().ReturnToLobby(gameObject);
+        }
+
     }
 
     public void OnStart()
@@ -304,7 +309,7 @@ public class PlayerInventory : MonoBehaviour
         currentHealth -= damage;
         uIMain.GetComponent<PlayerUIScript>().UpdateHealthbar(currentHealth/maxHealth);
 
-        if (currentHealth <= 0f)
+        if (currentHealth <= 0f && !dead)
         {
             GameObject b = Instantiate(deadPlayerObj, transform.position, transform.rotation);
             b.GetComponent<SpriteRenderer>().color = pColor;

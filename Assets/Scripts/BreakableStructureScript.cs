@@ -21,6 +21,7 @@ public class BreakableStructureScript : MonoBehaviour
     public GameObject[] supports = new GameObject[4];
     private bool dead = false;
     public Vector3 rayOriginOffset = new Vector3(0.5f, 0.5f, 0f);
+    private AudioSource src;
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +29,7 @@ public class BreakableStructureScript : MonoBehaviour
         maxHealth = health;
         spr = transform.GetComponent<SpriteRenderer>();
         rb2d = transform.GetComponent<Rigidbody2D>();
-
+        src = gameObject.GetComponent<AudioSource>();
 
         AddSupports();
 
@@ -116,6 +117,7 @@ public class BreakableStructureScript : MonoBehaviour
     //Called by an object to damage this object
     public void TakeDamage(float damage)
     {
+        //src.Play();
         health -= damage;
         if(health <= 0 && !dead)
         {

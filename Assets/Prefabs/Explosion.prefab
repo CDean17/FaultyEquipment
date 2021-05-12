@@ -47,6 +47,6 @@ MonoBehaviour:
   soundEffect: {fileID: 0}
   radius: 3
   explosionForce: 100
-  explosionDamage: 50
+  explosionDamage: 70
   throwAngle: 40
   throwForce: 50000

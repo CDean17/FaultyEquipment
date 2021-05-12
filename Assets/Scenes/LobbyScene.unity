@@ -167,85 +167,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &224616869 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4378240401411713455, guid: 93d2217c1ab16cd46844835032fc4f06, type: 3}
-  m_PrefabInstance: {fileID: 705381692}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &224616872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 224616869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_NotificationBehavior: 0
-  m_MaxPlayerCount: 4
-  m_AllowJoining: 1
-  m_JoinBehavior: 1
-  m_PlayerJoinedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_PlayerLeftEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_JoinAction:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Join
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 56283ab5-5c5b-4d14-af71-413fd7298d31
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings:
-      - m_Name: 
-        m_Id: d7701433-19df-4a1d-8110-f04411f39559
-        m_Path: <Keyboard>/z
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Join
-        m_Flags: 0
-      - m_Name: 
-        m_Id: d8b911af-ccac-4afa-be23-fd189f358473
-        m_Path: <Gamepad>/buttonSouth
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Join
-        m_Flags: 0
-    m_Reference: {fileID: -4341670074636800144, guid: 8b0e225b5a6c5394a80345d56971815e, type: 3}
-  m_PlayerPrefab: {fileID: 1858628001942437129, guid: c114d64e4174ddc499f021ecf8c1b98b, type: 3}
-  m_SplitScreen: 0
-  m_MaintainAspectRatioInSplitScreen: 0
-  m_FixedNumberOfSplitScreens: -1
-  m_SplitScreenRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
---- !u!114 &224616873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 224616869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0961dcda9870e354aab418e540f90eef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  roundEndTimer: 3
-  players: []
-  scores: 
 --- !u!1001 &705381692
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -301,20 +222,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 4378240401411713455, guid: 93d2217c1ab16cd46844835032fc4f06, type: 3}
-      propertyPath: m_TagString
-      value: GameController
-      objectReference: {fileID: 0}
-    - target: {fileID: 4378240401666948725, guid: 93d2217c1ab16cd46844835032fc4f06, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -4.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 4378240401666948725, guid: 93d2217c1ab16cd46844835032fc4f06, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.44
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4378240401666948682, guid: 93d2217c1ab16cd46844835032fc4f06, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93d2217c1ab16cd46844835032fc4f06, type: 3}
 --- !u!1 &1483393607
 GameObject:

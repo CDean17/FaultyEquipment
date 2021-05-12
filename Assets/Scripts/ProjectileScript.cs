@@ -20,12 +20,13 @@ public class ProjectileScript : MonoBehaviour
     //some components we need to reference
     private Rigidbody2D rb2d;
     private float deathTime;
-    
+    private AudioSource src;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        src = gameObject.GetComponent<AudioSource>();
         rb2d = transform.GetComponent<Rigidbody2D>();
         rb2d.gravityScale = gravityEffect;
         rb2d.velocity = transform.right * initialSpeed;
@@ -48,6 +49,7 @@ public class ProjectileScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        src.Play();
         if(collision.gameObject.TryGetComponent(out BreakableStructureScript b))
         {
             b.TakeDamage(impactDamage);

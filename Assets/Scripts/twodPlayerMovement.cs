@@ -22,9 +22,9 @@ public class twodPlayerMovement : MonoBehaviour
     private bool aiming = false;
     public bool ragDolling = false;
     private bool rotateRight = true;
+    private bool spinning = false;
     public float ragDollRotateSpeed = 5f;
     public float ragDollRestPeriod = 1f;
-    private float getUpTime = 0f;
     private Vector3 launchDirection;
     private bool launchNow = false;
     private float launchForce;
@@ -43,25 +43,12 @@ public class twodPlayerMovement : MonoBehaviour
         spr = transform.GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-   
-        
 
-
-    }
 
     private void FixedUpdate()
     {
-        if (launchNow)
-        {
-            launchNow = false;
-           // Debug.Log(Quaternion.AngleAxis(launchDirection.z, Vector3.forward) * Vector3.up * launchForce);
-            rb2d.AddForce(Quaternion.AngleAxis(launchDirection.z, Vector3.forward) * Vector3.up * launchForce);
-        }
 
+        //Set animation bools for walking
         if (rb2d.velocity.x != 0)
         {
             anim.SetBool("Walking", true);
@@ -71,6 +58,7 @@ public class twodPlayerMovement : MonoBehaviour
             anim.SetBool("Walking", false);
         }
 
+        //Set movement speed based on if aiming
         if (aiming)
         {
             curSpeed = aimMoveSpeed;
@@ -81,28 +69,25 @@ public class twodPlayerMovement : MonoBehaviour
         }
 
         float yFix = rb2d.velocity.y;
+
+        if (launchNow)
+        {
+            launchNow = false;
+            // Debug.Log(Quaternion.AngleAxis(launchDirection.z, Vector3.forward) * Vector3.up * launchForce);
+            rb2d.AddForce(Quaternion.AngleAxis(launchDirection.z, Vector3.forward) * Vector3.up * launchForce);
+        }
+
         //Determine if ragdolling/have controll of character
         if (ragDolling)
         {
-            if (rotateRight && !canJump)
+            if (rotateRight && spinning)
             {
                 transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles + new Vector3(0, 0, ragDollRotateSpeed * Time.deltaTime));
             }
-            else if(!rotateRight && !canJump)
+            else if(!rotateRight && spinning)
             {
                 transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles + new Vector3(0, 0, -ragDollRotateSpeed * Time.deltaTime));
             }
-            else
-            {
-                transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90));
-            }
-
-            if(canJump && getUpTime < Time.time)
-            {
-                ragDolling = false;
-                transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
-            }
-
 
         }
         else
@@ -150,19 +135,14 @@ public class twodPlayerMovement : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        //
-        //if (collision.)
-        // {
-        //Debug.Log("collided!");
+
         if (!jumpNow)
         {
             canJump = true;
         }
             
-          anim.SetBool("Grounded", true);
+        anim.SetBool("Grounded", true);
 
-
-        // }
     }
 
 
@@ -170,7 +150,11 @@ public class twodPlayerMovement : MonoBehaviour
     {
         if (ragDolling)
         {
-            getUpTime = Time.time + ragDollRestPeriod;
+            spinning = false;
+            Debug.Log("Started getup");
+            rb2d.velocity = new Vector2(0, 0);
+            transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90));
+            StartCoroutine(StopRagdollAfterTime(ragDollRestPeriod));
         }
     }
 
@@ -228,8 +212,9 @@ public class twodPlayerMovement : MonoBehaviour
         launchNow = true;
 
         ragDolling = true;
+        spinning = true;
         //Debug.Log("Threw Player! Direction: " + launchDirection +"  Force: " + throwForce);
-        
+
 
         if (launchDirection.z > 180)
         {
@@ -240,11 +225,15 @@ public class twodPlayerMovement : MonoBehaviour
             rotateRight = true;
         }
 
-        getUpTime = Time.time + ragDollRestPeriod;
 
     }
 
-
+    IEnumerator StopRagdollAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        ragDolling = false;
+        transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+    }
    
  
 }

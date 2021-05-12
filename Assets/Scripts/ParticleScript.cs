@@ -5,10 +5,12 @@ using UnityEngine;
 public class ParticleScript : MonoBehaviour
 {
     private ParticleSystem ps;
+    private AudioSource src;
 
     // Start is called before the first frame update
     void Start()
     {
+        src = gameObject.GetComponent<AudioSource>();
         ps = transform.GetComponent<ParticleSystem>();
     }
 

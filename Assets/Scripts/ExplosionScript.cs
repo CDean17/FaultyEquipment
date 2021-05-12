@@ -5,16 +5,19 @@ using UnityEngine;
 public class ExplosionScript : MonoBehaviour
 {
     public GameObject expParticle;
-    public AudioSource soundEffect;
     public float radius = 3f;
     public float explosionForce = 100f;
     public float explosionDamage = 50f;
     public float throwAngle = 40f;
     public float throwForce = 100f;
 
+    public float camShakeLength = 0.5f;
+    public float camShakeIntensity = 0.5f;
+
     // Start is called before the first frame update
     void Start()
     {
+        Camera.main.GetComponent<GameCamScript>().ShakeCam(camShakeIntensity, camShakeLength);
         Explode();
         Destroy(gameObject);
     }

@@ -13,7 +13,7 @@ PrefabInstance:
       objectReference: {fileID: 298790736614128589, guid: 54ced6b924be43e42b0bc3be7ab15853, type: 3}
     - target: {fileID: 4257035238542885079, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
       propertyPath: lifetime
-      value: 0.1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4257035238542885079, guid: 6de10dbd5239ad944901832b0b8ab05a, type: 3}
       propertyPath: impactDamage
